@@ -38,3 +38,42 @@
   (not-found "Not Found"))
 
 (def app (wrap-middleware #'routes))
+
+(s/defschema GlobalWord
+  {:id s/Int
+   :untranslated s/Str
+   :braille s/Str
+   :grade (s/enum 0 1 2)
+   :type (s/enum 0 1 2 3 4)
+   :homograph_disambiguation s/Str})
+
+(def app
+  (api.sweet/api
+    {:swagger
+     {:ui "/api-docs"
+      :spec "/swagger.json"
+      :data {:info {:title "Global Word API"
+                    :description "API to the global corpus of certified braille translations"}
+             :tags [{:name "api", :description "Certified braille translations"}]}}}
+
+    (api.sweet/context "/globalwords" []
+      :tags ["api"]
+
+      (api.sweet/GET "/" []
+        :return [GlobalWord]
+        :query-params [grade :- Long offset :- Long max-rows :- Long]
+        :summary "Gets all GlobalWords with given grade"
+        (response/ok (db/read-global-words-paginated grade offset max-rows)))
+
+      (api.sweet/GET "/search" []
+        :return [GlobalWord]
+        :query-params [grade :- Long term :- String]
+        :summary "Gets all GlobalWords matching the given grade and search term"
+        (response/ok (db/search-global-words grade term)))
+
+      (api.sweet/GET "/:id" []
+        :return GlobalWord
+        :path-params [id :- Long]
+        :summary "Gets a GlobalWord"
+        (response/ok (db/get-global-word id))))))
+
