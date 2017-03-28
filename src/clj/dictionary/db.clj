@@ -18,13 +18,18 @@
   (-> {:grade grade :max_rows max-rows :offset offset}
       global-words-paginated))
 
+(defn search-global-words-regexp
+  "Return a coll of words for given `grade` and given regular expression `search` term."
+  [grade search]
+  (try
+    (-> {:grade grade :search search} global-words-search-regexp)
+    ;; ignore exceptions due to incomplete regexps
+    (catch SQLSyntaxErrorException e ())))
+
 (defn search-global-words
   "Return a coll of words for given `grade` and given `search` term"
   [grade search]
-  (try
-    (-> {:grade grade :search search} global-words-search)
-    ;; ignore exceptions due to incomplete regexps
-    (catch SQLSyntaxErrorException e ())))
+  (-> {:grade grade :search search} global-words-search))
 
 ;; (defn save-word!
 ;;   "Persist `word` with given `hyphenation` and `grade`"

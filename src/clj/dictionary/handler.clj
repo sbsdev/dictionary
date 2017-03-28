@@ -71,6 +71,12 @@
         :summary "Gets all GlobalWords matching the given grade and search term"
         (response/ok (db/search-global-words grade term)))
 
+      (api.sweet/GET "/search-regexp" []
+        :return [GlobalWord]
+        :query-params [grade :- Long term :- String]
+        :summary "Gets all GlobalWords matching the given grade and regular expression search term"
+        (response/ok (db/search-global-words-regexp grade term)))
+
       (api.sweet/GET "/:id" []
         :return GlobalWord
         :path-params [id :- Long]
