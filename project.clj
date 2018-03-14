@@ -8,6 +8,7 @@
                  [ring-server "0.5.0"]
                  [reagent "0.7.0"]
                  [reagent-utils "0.3.1"]
+                 [org.immutant/web "2.1.10"]
                  [ring "1.6.3"]
                  [ring/ring-defaults "0.3.1"]
                  [compojure "1.6.0"]
@@ -17,9 +18,13 @@
                   :scope "provided"]
                  [secretary "1.2.3"]
                  [venantius/accountant "0.2.4"
-                  :exclusions [org.clojure/tools.reader]]]
+                  :exclusions [org.clojure/tools.reader]]
+                 [yesql "0.5.3"]
+                 [com.taoensso/tempura "1.1.1"]]
 
   :plugins [[lein-environ "1.1.0"]
+            [lein-immutant "2.1.0"]
+            [org.clojars.cvillecsteele/lein-git-version "1.0.3"]
             [lein-cljsbuild "1.1.7"]
             [lein-asset-minifier "0.2.7"
              :exclusions [org.clojure/clojure]]]

@@ -1,9 +1,9 @@
 (ns dictionary.server
-  (:require [dictionary.handler :refer [site api]]
+  (:require [dictionary.handler :refer [app]]
             [immutant.web :as web])
   (:gen-class))
 
 (defn -main [& args]
   ;; start web server
-  (web/run #'site)
-  (web/run #'api :path "/api"))
+  (web/run #'app)
+  #_(web/run #'api :path "/api"))
