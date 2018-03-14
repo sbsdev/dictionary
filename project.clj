@@ -4,27 +4,23 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
-  :dependencies [[org.clojure/clojure "1.8.0"]
-                 [ring-server "0.4.0"]
-                 [org.immutant/web "2.1.6"]
-                 [reagent "0.6.0"]
-                 [reagent-utils "0.2.0"]
-                 [ring "1.5.0"]
-                 [ring/ring-defaults "0.2.1"]
-                 [compojure "1.5.1"]
+  :dependencies [[org.clojure/clojure "1.9.0"]
+                 [ring-server "0.5.0"]
+                 [reagent "0.7.0"]
+                 [reagent-utils "0.3.1"]
+                 [ring "1.6.3"]
+                 [ring/ring-defaults "0.3.1"]
+                 [compojure "1.6.0"]
                  [hiccup "1.0.5"]
-                 [yogthos/config "0.8"]
-                 [org.clojure/clojurescript "1.9.473" :scope "provided"]
+                 [yogthos/config "1.1"]
+                 [org.clojure/clojurescript "1.9.946"
+                  :scope "provided"]
                  [secretary "1.2.3"]
-                 [venantius/accountant "0.1.7" :exclusions [org.clojure/tools.reader]]
-                 [yesql "0.5.3"]
-                 [com.taoensso/tempura "1.1.1"]
-                 [metosin/compojure-api "1.2.0-alpha4"]]
+                 [venantius/accountant "0.2.4"
+                  :exclusions [org.clojure/tools.reader]]]
 
-  :plugins [[lein-environ "1.0.2"]
-            [lein-immutant "2.1.0"]
-            [org.clojars.cvillecsteele/lein-git-version "1.0.3"]
-            [lein-cljsbuild "1.1.1"]
+  :plugins [[lein-environ "1.1.0"]
+            [lein-cljsbuild "1.1.7"]
             [lein-asset-minifier "0.2.7"
              :exclusions [org.clojure/clojure]]]
 
@@ -53,12 +49,14 @@
   {:builds {:min
             {:source-paths ["src/cljs" "src/cljc" "env/prod/cljs"]
              :compiler
-             {:output-to "target/cljsbuild/public/js/app.js"
-              :output-dir "target/uberjar"
+             {:output-to        "target/cljsbuild/public/js/app.js"
+              :output-dir       "target/cljsbuild/public/js"
+              :source-map       "target/cljsbuild/public/js/app.js.map"
               :optimizations :advanced
               :pretty-print  false}}
             :app
             {:source-paths ["src/cljs" "src/cljc" "env/dev/cljs"]
+             :figwheel {:on-jsload "dictionary.core/mount-root"}
              :compiler
              {:main "dictionary.dev"
               :asset-path "/js/out"
@@ -79,8 +77,6 @@
    :server-port 3449
    :nrepl-port 7002
    :nrepl-middleware ["cemerick.piggieback/wrap-cljs-repl"
-                      "cider.nrepl/cider-middleware"
-                      "refactor-nrepl.middleware/wrap-refactor"
                       ]
    :css-dirs ["resources/public/css"]
    :ring-handler dictionary.handler/app}
@@ -90,24 +86,20 @@
   :profiles {:dev {:repl-options {:init-ns dictionary.repl
                                   :nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
 
-                   :dependencies [[ring/ring-mock "0.3.0"]
-                                  [ring/ring-devel "1.5.0"]
-                                  [prone "1.1.4"]
-                                  [figwheel-sidecar "0.5.8" :exclusions [org.clojure/core.async]]
-                                  [org.clojure/tools.nrepl "0.2.12"]
-                                  [com.cemerick/piggieback "0.2.2-SNAPSHOT"]
-                                  [pjstadig/humane-test-output "0.8.1"]
-                                  [mysql/mysql-connector-java "5.1.6"]
-                                  ]
+                   :dependencies [[binaryage/devtools "0.9.9"]
+                                  [ring/ring-mock "0.3.2"]
+                                  [ring/ring-devel "1.6.3"]
+                                  [prone "1.5.0"]
+                                  [figwheel-sidecar "0.5.15"]
+                                  [org.clojure/tools.nrepl "0.2.13"]
+                                  [com.cemerick/piggieback "0.2.2"]
+                                  [pjstadig/humane-test-output "0.8.3"]
+                                  
+ ]
 
                    :source-paths ["env/dev/clj"]
-                   :plugins [[lein-figwheel "0.5.8" :exclusions [org.clojure/clojure]]
-                             [cider/cider-nrepl "0.15.0-SNAPSHOT"]
-                             [org.clojure/tools.namespace "0.3.0-alpha2"
-                              :exclusions [org.clojure/tools.reader]]
-                             [refactor-nrepl "2.3.0-SNAPSHOT"
-                              :exclusions [org.clojure/clojure]]
-                             ]
+                   :plugins [[lein-figwheel "0.5.15"]
+]
 
                    :injections [(require 'pjstadig.humane-test-output)
                                 (pjstadig.humane-test-output/activate!)]
