@@ -6,6 +6,7 @@
 
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [ring-server "0.4.0"]
+                 [org.immutant/web "2.1.6"]
                  [reagent "0.6.0"]
                  [reagent-utils "0.2.0"]
                  [ring "1.5.0"]
@@ -21,6 +22,8 @@
                  [metosin/compojure-api "1.2.0-alpha4"]]
 
   :plugins [[lein-environ "1.0.2"]
+            [lein-immutant "2.1.0"]
+            [org.clojars.cvillecsteele/lein-git-version "1.0.3"]
             [lein-cljsbuild "1.1.1"]
             [lein-asset-minifier "0.2.7"
              :exclusions [org.clojure/clojure]]]
