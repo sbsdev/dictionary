@@ -26,9 +26,15 @@
   :plugins [[lein-environ "1.1.0"]
             [lein-immutant "2.1.0"]
             [org.clojars.cvillecsteele/lein-git-version "1.0.3"]
+            [lein-codox "0.10.3"]
             [lein-cljsbuild "1.1.7"]
             [lein-asset-minifier "0.2.7"
              :exclusions [org.clojure/clojure]]]
+
+  :codox {:project {:name "Dictionary"}
+          :source-paths ["src/clj"]
+          :source-uri "https://github.com/sbsdev/dictionary/blob/v{version}/{filepath}#L{line}"
+          :metadata {:doc/format :markdown}}
 
   :ring {:handler dictionary.handler/app
          :uberwar-name "dictionary.war"}
