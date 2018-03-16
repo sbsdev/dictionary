@@ -36,6 +36,11 @@ FROM dictionary_globalword
 WHERE id = :id
 
 -- name: remove-global-word-internal!
--- Delete the given `word` from the dictionary.
+-- Delete word with the given `id` from the dictionary.
 DELETE FROM dictionary_globalword
 WHERE id = :id
+
+-- name: insert-global-word!
+-- Insert the given word into the dictionary
+INSERT INTO dictionary_globalword (untranslated, braille, grade, type, homograph_disambiguation)
+VALUES (:untranslated, :braille, :grade, :type, :homograph_disambiguation)
