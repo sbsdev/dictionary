@@ -15,11 +15,11 @@
 
 (defn convert-record
   "Convert a dictionary record to a form suitable for inserting into the db"
-  [[type-raw untranslated-raw braille1, braille2]]
+  [[type-raw untranslated-raw grade2 grade1]]
   (let [type (type-map type-raw)
         untranslated (string/replace untranslated-raw "|" "")
         homograph_disambiguation (if (= type 5) untranslated-raw "")]
-    (for [[braille grade] [[braille1 1] [braille2 2]]]
+    (for [[braille grade] [[grade1 1] [grade2 2]]]
       {:type type
        :untranslated untranslated
        :grade grade
