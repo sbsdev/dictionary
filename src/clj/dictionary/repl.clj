@@ -2,8 +2,8 @@
   (:require [clojure.data.csv :as csv]
             [clojure.java.io :as io]
             [clojure.java.jdbc :as jdbc]
-            [clojure.string :as string]
-            [dictionary.db :as db]))
+            [clojure.string :as string]))
+
 
 (def type-map
   {"*" 0 ; No restriction
@@ -26,18 +26,24 @@
        :homograph_disambiguation homograph_disambiguation
        :braille braille})))
 
-(defn- insert-records [tx records]
-  (for [record records]
-    (db/insert-global-word! record {:connection tx})))
+(defn- insert-records
+  [tx table records]
+  (jdbc/insert-multi! tx table records))
+
+(defn read-csv [file-name]
+  (with-open [reader (io/reader file-name)]
+    (doall
+     (->> (csv/read-csv reader :separator \tab :quote \`)
+          (mapcat convert-record)))))
 
 (defn import-csv
   "Import the given csv file `file-name` and insert as records in given
   `db`. The records are read, converted according
   to [[convert-record]] and [[type-map]]."
-  [file-name db]
-  (with-open [reader (io/reader file-name)]
-    (jdbc/with-db-transaction [tx db]
-       (->> (csv/read-csv reader :separator \tab :quote \`)
-            (mapcat convert-record)
-            (insert-records tx)
-            (reduce +)))))
+  [file-name db table]
+  (jdbc/with-db-transaction [tx db]
+    (->>
+     (read-csv file-name)
+     (insert-records tx table)
+     count)))
+
